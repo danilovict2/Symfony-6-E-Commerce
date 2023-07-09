@@ -6,6 +6,7 @@
         "@symfony/stimulus-bridge": "^3.2.0",
         "@symfony/ux-vue": "file:vendor/symfony/ux-vue/assets",
         "@symfony/webpack-encore": "^4.0.0",
+        "@tailwindcss/forms": "^0.5.3",
         "autoprefixer": "^10.4.14",
         "core-js": "^3.23.0",
         "postcss": "^8.4.25",
@@ -27,5 +28,8 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "vuex": "^4.0.2"
     }
 }
