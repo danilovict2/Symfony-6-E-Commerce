@@ -6,9 +6,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[Gedmo\SoftDeleteable]
+#[UniqueEntity('slug')]
 class Product
 {
     #[ORM\Id]
@@ -48,6 +51,13 @@ class Product
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $deletedBy = null;
+
+    public function computeSlug(SluggerInterface $slugger)
+    {
+        if (!$this->slug || '-' === $this->slug) {
+            $this->slug = (string) $slugger->slug((string) $this->title)->lower();
+        }
+    }
 
     public function getId(): ?int
     {
