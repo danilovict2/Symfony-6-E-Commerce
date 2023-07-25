@@ -6,7 +6,7 @@
 			{% for product in products %}
 				<div x-data="productItem({
 													            id: {{ product.id }},
-													            image: '{{ product.image }}',
+													            image: '{{ 'uploads/photos/' ~ product.image }}',
 													            title: '{{ product.title }}',
 													            price: {{ product.price }}
 													          })" class="border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white">
@@ -21,7 +21,7 @@
 								{{ product.title }}
 							</a>
 						</h3>
-						<h5 class="font-bold">{{ product.price }}</h5>
+						<h5 class="font-bold">{{ product.price|format_currency('EUR') }}</h5>
 					</div>
 					<div class="flex justify-between py-3 px-4">
                         <!--TODO: Create vue component -->
