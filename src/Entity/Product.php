@@ -25,12 +25,6 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageMime = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $imageSize = null;
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
@@ -74,30 +68,6 @@ class Product
     public function setImage(?string $image): static
     {
         $this->image = $image;
-
-        return $this;
-    }
-
-    public function getImageMime(): ?string
-    {
-        return $this->imageMime;
-    }
-
-    public function setImageMime(?string $imageMime): static
-    {
-        $this->imageMime = $imageMime;
-
-        return $this;
-    }
-
-    public function getImageSize(): ?int
-    {
-        return $this->imageSize;
-    }
-
-    public function setImageSize(?int $imageSize): static
-    {
-        $this->imageSize = $imageSize;
 
         return $this;
     }
