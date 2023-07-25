@@ -30,6 +30,8 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@alpinejs/collapse": "^3.12.3",
+        "alpinejs": "^3.12.3",
         "vuex": "^4.0.2"
     }
 }
