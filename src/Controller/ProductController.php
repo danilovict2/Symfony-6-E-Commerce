@@ -17,4 +17,13 @@ class ProductController extends AbstractController
             'products' => $products
         ]);
     }
+
+    #[Route('/product/{title}', name: 'product_show')]
+    public function show(string $title, ProductRepository $productRepository): Response
+    {
+        $product = $productRepository->findOneByTitle($title);
+        return $this->render('product/show.html.twig', [
+            'product' => $product
+        ]);
+    }
 }
