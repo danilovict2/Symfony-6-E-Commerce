@@ -11,7 +11,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[Gedmo\SoftDeleteable]
-#[UniqueEntity('slug')]
+#[UniqueEntity('title')]
 class Product
 {
     #[ORM\Id]
@@ -21,9 +21,6 @@ class Product
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
@@ -52,13 +49,6 @@ class Product
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $deletedBy = null;
 
-    public function computeSlug(SluggerInterface $slugger)
-    {
-        if (!$this->slug || '-' === $this->slug) {
-            $this->slug = (string) $slugger->slug((string) $this->title)->lower();
-        }
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -72,18 +62,6 @@ class Product
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
 
         return $this;
     }
