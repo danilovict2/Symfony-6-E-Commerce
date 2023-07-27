@@ -11,34 +11,33 @@ use Symfony\Component\HttpFoundation\Request;
 class CartHelper
 {
     public function __construct(
-        private Request $request,
         private Security $security,
         private CartItemRepository $cartItemRepository,
         private ProductRepository $productRepository
     ) {
     }
 
-    public function getItemsCount(): int
+    public function getItemsCount(Request $request): int
     {
         $user = $this->security->getUser();
         return $user ?
             $this->cartItemRepository->getUserCartItemsCount($user) :
             array_reduce(
-                $this->getCookieItems(),
+                $this->getCookieItems($request),
                 fn ($carry, $item) => $carry + $item['quantity'],
                 0
             );
     }
 
-    public function getItems(): array
+    public function getItems(Request $request): array
     {
         $user = $this->security->getUser();
-        return $user ? $this->cartItemRepository->getUserCartItems($user) : $this->getCookieItems();
+        return $user ? $this->cartItemRepository->getUserCartItems($user) : $this->getCookieItems($request);
     }
 
-    public function saveItems(): void
+    public function saveItems(Request $request): void
     {
-        $cartItems = $this->getCookieItems();
+        $cartItems = $this->getCookieItems($request);
         $user = $this->security->getUser();
         $dbCartItems = $this->cartItemRepository->getUserCartItemsGroupedByProduct($user);
 
@@ -62,8 +61,8 @@ class CartHelper
         return $newCartItem;
     }
 
-    private function getCookieItems(): array
+    private function getCookieItems(Request $request): array
     {
-        return $this->request->cookies->all('cart_items');
+        return $request->cookies->all('cart_items');
     }
 }
