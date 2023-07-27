@@ -32,6 +32,9 @@
     "dependencies": {
         "@alpinejs/collapse": "^3.12.3",
         "alpinejs": "^3.12.3",
+        "axios": "^1.4.0",
+        "jquery": "^3.7.0",
+        "pinia": "^2.1.6",
         "vuex": "^4.0.2"
     }
 }
