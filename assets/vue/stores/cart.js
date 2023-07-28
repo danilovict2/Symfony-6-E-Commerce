@@ -30,14 +30,5 @@ export const useCartStore = defineStore('cart', {
         cartItemsCount: (state) => {
             return state.items.length;
         },
-        
-        getTotal: async (state) => {
-            let total = 0;
-            for(let item of state.items) {
-                //let product = await useProduct(item.id).product;
-                //total += product.price * item.quantity;
-            }
-            return total;
-        }
     },
 });

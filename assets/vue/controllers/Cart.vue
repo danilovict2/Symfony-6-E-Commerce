@@ -16,7 +16,7 @@
                                 </a>
                                 <div class="flex flex-col justify-between flex-1">
                                     <div class="flex justify-between mb-3">
-                                        <h3 v-text="cartItem.product.title"></h3>
+                                        <h3 v-text="cartItem.product.title" class="text-3xl"></h3>
                                         <span class="text-lg font-semibold">
                                             $<span v-text="cartItem.product.price"></span>
                                         </span>
@@ -25,7 +25,9 @@
                                         <div class="flex items-center">
                                             Qty:
                                             <input type="number" min="1" v-model="cartItem.quantity"
-                                                class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" />
+                                                class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" 
+                                                @change="calculateTotal"    
+                                            />
                                         </div>
                                         <a href="#" @click.prevent="removeItemFromCart()"
                                             class="text-purple-600 hover:text-purple-500">Remove</a>
@@ -41,7 +43,7 @@
                     <div class="border-t border-gray-300 pt-4">
                         <div class="flex justify-between">
                             <span class="font-semibold">Subtotal</span>
-                            <span id="cartTotal" class="text-xl" v-text="`$${useCartStore().getTotal}`"></span>
+                            <span id="cartTotal" class="text-xl" v-text="`$${total}`"></span>
                         </div>
                         <p class="text-gray-500 mb-6">
                             Shipping and taxes calculated at checkout.
@@ -70,6 +72,7 @@ import useProduct from '../composables/product';
 import { useCartStore } from '../stores/cart'
 
 let cartItems = ref([]);
+let total = ref(0);
 
 async function fetchCartItems() {
     for(let item of useCartStore().items) {
@@ -78,6 +81,14 @@ async function fetchCartItems() {
             product: cartItem.product.product,
             quantity: item.quantity
         });
+    }
+    calculateTotal();
+}
+
+function calculateTotal() {
+    total.value = 0;
+    for(let cartItem of cartItems.value) {
+        total.value += cartItem.product.price * cartItem.quantity;
     }
 }
 
