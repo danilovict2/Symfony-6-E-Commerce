@@ -1,11 +1,8 @@
 import axios from 'axios';
 
-export default function useProduct(productId) {
-    let product = null;
-    axios.get('/product/' + productId + '/full')
-    .then(response => {
-        product = response.data;
-    })
+export default async function useProduct(productId) {
+    let response = await axios.get('/product/' + productId + '/full')
+    let product = response.data;
 
     return {product};
 }

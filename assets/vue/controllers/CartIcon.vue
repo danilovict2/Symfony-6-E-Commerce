@@ -9,14 +9,12 @@
             Cart
         </div>
         <!-- Cart Items Counter -->
-        <small v-show="cartItemsCount" v-text="cartItemsCount"
+        <small v-show="useCartStore().cartItemsCount" v-text="useCartStore().cartItemsCount"
             class="py-[3px] px-[8px] mb-3 rounded-full bg-red-500"></small>
         <!--/ Cart Items Counter -->
     </a>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
-let cartItemsCount = ref(1);
+import { useCartStore } from '../stores/cart';
 </script>
