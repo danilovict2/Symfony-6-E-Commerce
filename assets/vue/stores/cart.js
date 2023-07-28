@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import useProduct from '../composables/product';
 
 export const useCartStore = defineStore('cart', {
     state: () => {
@@ -14,7 +13,6 @@ export const useCartStore = defineStore('cart', {
                     id: 10,
                     quantity: 3
                 }
-                
             ])
         }
     },
@@ -24,6 +22,10 @@ export const useCartStore = defineStore('cart', {
                 id: productId,
                 quantity: quantity
             });
+        },
+        removeFromCart(productId) {
+            this.items = this.items.filter((product) => product.id !== productId);
+            console.log(this.items);
         }
     },
     getters: {

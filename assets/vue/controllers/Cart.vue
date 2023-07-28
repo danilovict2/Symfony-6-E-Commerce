@@ -29,7 +29,7 @@
                                                 @change="calculateTotal"    
                                             />
                                         </div>
-                                        <a href="#" @click.prevent="removeItemFromCart()"
+                                        <a href="#" @click.prevent="useCartStore().removeFromCart(cartItem.product.id);fetchCartItems();"
                                             class="text-purple-600 hover:text-purple-500">Remove</a>
                                     </div>
                                 </div>
@@ -75,6 +75,7 @@ let cartItems = ref([]);
 let total = ref(0);
 
 async function fetchCartItems() {
+    cartItems.value = [];
     for(let item of useCartStore().items) {
         let cartItem = await useProduct(item.id);
         cartItems.value.push({
