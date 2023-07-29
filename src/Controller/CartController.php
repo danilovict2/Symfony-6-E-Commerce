@@ -30,7 +30,7 @@ class CartController extends AbstractController
             },
             $cookieCartItems
         );
-
+        
         return $this->render('cart/index.html.twig', [
             'cartItems' => $cartItems
         ]);
@@ -61,6 +61,24 @@ class CartController extends AbstractController
             }
         }
 
+        $response = new JsonResponse(['count' => Cart::getItemCount($cartItems)]);
+        Cart::saveItemsToCookie($cartItems, $response);
+        return $response;
+    }
+
+    #[Route('/update-quantity/{title}', name: 'cart_update_quantity', methods: ['POST'])]
+    public function updateQuantity(string $title, Request $request, ProductRepository $productRepository): JsonResponse
+    {
+        $product = $productRepository->findOneByTitle($title);
+        $quantity = $request->query->getInt('quantity');
+        $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
+
+        foreach ($cartItems as &$item) {
+            if ($item['product_id'] === $product->getId()) {
+                $item['quantity'] = $quantity;
+                break;
+            }
+        }
         $response = new JsonResponse(['count' => Cart::getItemCount($cartItems)]);
         Cart::saveItemsToCookie($cartItems, $response);
         return $response;

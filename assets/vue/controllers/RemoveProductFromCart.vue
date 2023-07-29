@@ -7,7 +7,7 @@ import axios from 'axios';
 import { cart } from '../stores/cart.js';
 
 let props = defineProps({
-    productTitle: Number,
+    productTitle: String,
 });
 
 

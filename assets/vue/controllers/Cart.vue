@@ -26,7 +26,7 @@
                                             Qty:
                                             <input type="number" min="1" v-model="cartItem.quantity"
                                                 class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" 
-                                                @change="calculateTotal();changeQuantityInSession();"    
+                                                @change="changeQuantity(cartItem)"    
                                             />
                                         </div>
                                         <RemoveProductFromCart :product-title="cartItem.title" @removed="removeProduct(cartItem.id)"/>
@@ -68,6 +68,8 @@
 <script setup>
 import { ref } from 'vue';
 import RemoveProductFromCart from './RemoveProductFromCart.vue';
+import axios from 'axios';
+import { cart } from '../stores/cart';
 
 let props = defineProps({
     cartItems: Array
@@ -80,5 +82,16 @@ function getCartTotal() {
 
 function removeProduct(productId) {
     cartItems.value = cartItems.value.filter(p => p.id !== productId)
+}
+
+function changeQuantity(product) {
+    axios.post('/cart/update-quantity/' + product.title, null, {
+        params: {
+            quantity: parseInt(product.quantity)
+        }
+    })
+    .then(response => {
+        cart.itemsCount = response.data.count;
+    })
 }
 </script>
