@@ -4,21 +4,21 @@
 
         <div class="bg-white p-4 rounded-lg shadow">
             <!-- Product Items -->
-            <template v-if="cartItems.length">
+            <template v-if="props.cartItems.length">
                 <div>
                     <!-- Product Item -->
-                    <template v-for="cartItem of cartItems" :key="cartItem.product.id">
+                    <template v-for="cartItem of props.cartItems" :key="cartItem.id">
                         <div>
                             <div class="w-full flex items-center gap-4 flex-1">
-                                <a :href="'/product/' + cartItem.product.title"
+                                <a :href="'/product/' + cartItem.title"
                                     class="w-36 h-32 flex items-center justify-center overflow-hidden">
-                                    <img :src="'/uploads/photos/' + cartItem.product.image" class="object-cover" alt="" />
+                                    <img :src="'/uploads/photos/' + cartItem.image" class="object-cover" alt="" />
                                 </a>
                                 <div class="flex flex-col justify-between flex-1">
                                     <div class="flex justify-between mb-3">
-                                        <h3 v-text="cartItem.product.title" class="text-3xl"></h3>
+                                        <h3 v-text="cartItem.title" class="text-3xl"></h3>
                                         <span class="text-lg font-semibold">
-                                            $<span v-text="cartItem.product.price"></span>
+                                            $<span v-text="cartItem.price"></span>
                                         </span>
                                     </div>
                                     <div class="flex justify-between items-center">
@@ -29,7 +29,7 @@
                                                 @change="calculateTotal();changeQuantityInSession();"    
                                             />
                                         </div>
-                                        <a href="#" @click.prevent="useCartStore().removeFromCart(cartItem.product.id);fetchCartItems();"
+                                        <a href="#" @click.prevent="useCartStore().removeFromCart(cartItem.id);fetchCartItems();"
                                             class="text-purple-600 hover:text-purple-500">Remove</a>
                                     </div>
                                 </div>
@@ -43,7 +43,7 @@
                     <div class="border-t border-gray-300 pt-4">
                         <div class="flex justify-between">
                             <span class="font-semibold">Subtotal</span>
-                            <span id="cartTotal" class="text-xl" v-text="`$${total}`"></span>
+                            <span id="cartTotal" class="text-xl" v-text="`$${getCartTotal()}`"></span>
                         </div>
                         <p class="text-gray-500 mb-6">
                             Shipping and taxes calculated at checkout.
@@ -67,5 +67,11 @@
 </template>
 
 <script setup>
+let props = defineProps({
+    cartItems: Array
+});
 
+function getCartTotal() {
+    return props.cartItems.reduce((accum, next) => accum + next.price * next.quantity, 0).toFixed(2)
+}
 </script>
