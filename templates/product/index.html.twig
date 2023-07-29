@@ -3,12 +3,7 @@
 {% block body %}
 	<div class="grid gap-8 grig-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-5">
 		{% for product in products %}
-			<div x-data="productItem({
-							                    'id' : {{ product.id }},
-							                    'image' : {{ '/uploads/photos/' ~ product.image }},
-							                    'title' : {{ product.title }},
-							                    'price' : {{ product.price }},
-							                })" class="border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white">
+			<div class="border border-1 border-gray-200 rounded-md hover:border-purple-600 transition-colors bg-white">
 				<a href="{{ path('product_show', {'title': product.title}) }}" class="aspect-w-3 aspect-h-2 block overflow-hidden">
 					<img src="{{ '/uploads/photos/' ~ product.image }}" alt="" class="object-cover rounded-lg hover:scale-105 hover:rotate-1 transition-transform"/>
 				</a>
