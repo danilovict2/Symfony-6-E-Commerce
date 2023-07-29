@@ -9,9 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Cart
 {
-    public static function getItemCount(Request $request): int
+    public static function getItemCount(array $cartItems): int
     {
-        $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
         return array_reduce(
             $cartItems,
             fn($carry, $item) => $carry + $item['quantity'],

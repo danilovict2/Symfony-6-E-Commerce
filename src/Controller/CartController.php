@@ -44,7 +44,7 @@ class CartController extends AbstractController
         $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
 
         Cart::findOrCreateItemByProductAndUpdateQuantity($cartItems, $product, $quantity);
-        $response = new JsonResponse(['count' => Cart::getItemCount($request)]);
+        $response = new JsonResponse(['count' => Cart::getItemCount($cartItems)]);
         Cart::saveItemsToCookie($cartItems, $response);
         return $response;
     }
@@ -61,7 +61,7 @@ class CartController extends AbstractController
             }
         }
 
-        $response = new JsonResponse(['count' => Cart::getItemCount($request)]);
+        $response = new JsonResponse(['count' => Cart::getItemCount($cartItems)]);
         Cart::saveItemsToCookie($cartItems, $response);
         return $response;
     }
