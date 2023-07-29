@@ -50,7 +50,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/remove/{title}', name: 'cart_remove', methods: ['POST'])]
-    public function remove(string $title, Request $request, ProductRepository $productRepository)
+    public function remove(string $title, Request $request, ProductRepository $productRepository): JsonResponse
     {
         $product = $productRepository->findOneByTitle($title);
         $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
@@ -64,5 +64,14 @@ class CartController extends AbstractController
         $response = new JsonResponse(['count' => Cart::getItemCount($cartItems)]);
         Cart::saveItemsToCookie($cartItems, $response);
         return $response;
+    }
+
+    #[Route('/items/count', name: 'cart_items_count', methods: ['POST'])]
+    public function itemCount(Request $request)
+    {
+        $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
+        return $this->json([
+            'count' => Cart::getItemCount($cartItems)
+        ]);
     }
 }

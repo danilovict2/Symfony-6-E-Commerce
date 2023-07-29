@@ -4,10 +4,10 @@
 
         <div class="bg-white p-4 rounded-lg shadow">
             <!-- Product Items -->
-            <template v-if="props.cartItems.length">
+            <template v-if="cartItems.length">
                 <div>
                     <!-- Product Item -->
-                    <template v-for="cartItem of props.cartItems" :key="cartItem.id">
+                    <template v-for="cartItem of cartItems" :key="cartItem.id">
                         <div>
                             <div class="w-full flex items-center gap-4 flex-1">
                                 <a :href="'/product/' + cartItem.title"
@@ -29,7 +29,7 @@
                                                 @change="calculateTotal();changeQuantityInSession();"    
                                             />
                                         </div>
-                                        <RemoveProductFromCart :product-title="cartItem.title"/>
+                                        <RemoveProductFromCart :product-title="cartItem.title" @removed="removeProduct(cartItem.id)"/>
                                     </div>
                                 </div>
                             </div>
@@ -66,13 +66,19 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import RemoveProductFromCart from './RemoveProductFromCart.vue';
 
 let props = defineProps({
     cartItems: Array
 });
+let cartItems = ref(props.cartItems);
 
 function getCartTotal() {
-    return props.cartItems.reduce((accum, next) => accum + next.price * next.quantity, 0).toFixed(2)
+    return cartItems.value.reduce((accum, next) => accum + next.price * next.quantity, 0).toFixed(2)
+}
+
+function removeProduct(productId) {
+    cartItems.value = cartItems.value.filter(p => p.id !== productId)
 }
 </script>

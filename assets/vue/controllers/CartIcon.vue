@@ -16,5 +16,14 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { cart } from '../stores/cart';
+import { onBeforeMount } from 'vue';
+
+onBeforeMount(() => {
+    axios.post('/cart/items/count')
+    .then(response => {
+        cart.itemsCount = response.data.count;
+    })
+});
 </script>
