@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Cart;
-use App\Entity\Product;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,12 +14,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class CartController extends AbstractController
 {
     #[Route('', name: 'cart')]
-    public function index(): Response
+    public function index(Request $request, ProductRepository $productRepository): Response
     {
-        return $this->render('cart/index.html.twig');
+        $cookieCartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
+        $cartItems = array_map(
+            function ($cookieCartItem) use ($productRepository) {
+                $product = $productRepository->find($cookieCartItem['product_id']);
+                return [
+                    'id' => $product->getId(),
+                    'image' => $product->getImage(),
+                    'title' => $product->getTitle(),
+                    'price' => $product->getPrice(),
+                    'quantity' => $cookieCartItem['quantity'],
+                ];
+            },
+            $cookieCartItems
+        );
+
+        return $this->render('cart/index.html.twig', [
+            'cartItems' => $cartItems
+        ]);
     }
 
-    #[Route('/add/{title}', 'cart_add', methods: ['POST'])]
+    #[Route('/add/{title}', name: 'cart_add', methods: ['POST'])]
     public function add(string $title, ProductRepository $productRepository, Request $request): JsonResponse
     {
         $product = $productRepository->findOneByTitle($title);
@@ -29,6 +44,23 @@ class CartController extends AbstractController
         $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
 
         Cart::findOrCreateItemByProductAndUpdateQuantity($cartItems, $product, $quantity);
+        $response = new JsonResponse(['count' => Cart::getItemCount($request)]);
+        Cart::saveItemsToCookie($cartItems, $response);
+        return $response;
+    }
+
+    #[Route('/remove/{title}', name: 'cart_remove', methods: ['POST'])]
+    public function remove(string $title, Request $request, ProductRepository $productRepository)
+    {
+        $product = $productRepository->findOneByTitle($title);
+        $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
+        foreach ($cartItems as $i => &$item) {
+            if ($item['product_id'] === $product->getId()) {
+                array_splice($cartItems, $i, 1);
+                break;
+            }
+        }
+
         $response = new JsonResponse(['count' => Cart::getItemCount($request)]);
         Cart::saveItemsToCookie($cartItems, $response);
         return $response;

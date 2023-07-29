@@ -29,8 +29,7 @@
                                                 @change="calculateTotal();changeQuantityInSession();"    
                                             />
                                         </div>
-                                        <a href="#" @click.prevent="useCartStore().removeFromCart(cartItem.id);fetchCartItems();"
-                                            class="text-purple-600 hover:text-purple-500">Remove</a>
+                                        <RemoveProductFromCart :product-title="cartItem.title"/>
                                     </div>
                                 </div>
                             </div>
@@ -67,6 +66,8 @@
 </template>
 
 <script setup>
+import RemoveProductFromCart from './RemoveProductFromCart.vue';
+
 let props = defineProps({
     cartItems: Array
 });
