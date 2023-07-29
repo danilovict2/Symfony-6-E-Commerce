@@ -4,7 +4,6 @@ namespace App;
 
 use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Cart
