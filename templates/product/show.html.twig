@@ -60,7 +60,7 @@
 					</label>
 					<input type="number" name="quantity" x-ref="quantityEl" value="1" class="w-32 focus:border-purple-500 focus:outline-none rounded"/>
 				</div>
-				<div {{ vue_component('AddProductToCart', {productId: product.id, isBig: true}) }}></div>
+				<div {{ vue_component('AddProductToCart', {productTitle: product.title, isBig: true}) }}></div>
 				<div class="mb-6" x-data="{expanded: false}">
 					<div x-show="expanded" x-collapse.min.120px class="text-gray-500 wysiwyg-content">
 						{{ product.description }}

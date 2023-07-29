@@ -9,12 +9,12 @@
             Cart
         </div>
         <!-- Cart Items Counter -->
-        <small v-show="useCartStore().cartItemsCount" v-text="useCartStore().cartItemsCount"
+        <small v-show="cart.itemsCount" v-text="cart.itemsCount"
             class="py-[3px] px-[8px] mb-3 rounded-full bg-red-500"></small>
         <!--/ Cart Items Counter -->
     </a>
 </template>
 
 <script setup>
-import { useCartStore } from '../stores/cart';
+import { cart } from '../stores/cart';
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <button class="btn-primary" @click="cartStore.addToCart(props.productId)" :class="{ 'py-4 text-lg flex justify-center min-w-0 w-full mb-6' : props.isBig }">
+    <button class="btn-primary" @click="addToCart()" :class="{ 'py-4 text-lg flex justify-center min-w-0 w-full mb-6' : props.isBig }">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor"
             stroke-width="2" v-show="props.isBig">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -10,15 +10,26 @@
 </template>
 
 <script setup>
-import { useCartStore } from '../stores/cart';
+import axios from 'axios';
+import { cart } from '../stores/cart.js';
 
 let props = defineProps({
-    productId: Number, 
+    productTitle: Number, 
     isBig: {
         type: Boolean,
         default: false
     }
 });
 
-let cartStore = useCartStore();
+function addToCart() {
+    axios.post('/cart/add/' + props.productTitle, null, {
+        params: {
+            quantity: 1
+        }
+    })
+    .then(response => {
+        cart.itemsCount = response.data.count;
+    })
+}
+
 </script>

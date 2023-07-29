@@ -26,7 +26,7 @@
                                             Qty:
                                             <input type="number" min="1" v-model="cartItem.quantity"
                                                 class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" 
-                                                @change="calculateTotal"    
+                                                @change="calculateTotal();changeQuantityInSession();"    
                                             />
                                         </div>
                                         <a href="#" @click.prevent="useCartStore().removeFromCart(cartItem.product.id);fetchCartItems();"
@@ -67,31 +67,5 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import useProduct from '../composables/product';
-import { useCartStore } from '../stores/cart'
 
-let cartItems = ref([]);
-let total = ref(0);
-
-async function fetchCartItems() {
-    cartItems.value = [];
-    for(let item of useCartStore().items) {
-        let cartItem = await useProduct(item.id);
-        cartItems.value.push({
-            product: cartItem.product.product,
-            quantity: item.quantity
-        });
-    }
-    calculateTotal();
-}
-
-function calculateTotal() {
-    total.value = 0;
-    for(let cartItem of cartItems.value) {
-        total.value += cartItem.product.price * cartItem.quantity;
-    }
-}
-
-fetchCartItems();
 </script>

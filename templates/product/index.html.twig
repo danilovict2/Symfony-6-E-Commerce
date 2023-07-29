@@ -21,7 +21,7 @@
 					<h5 class="font-bold">{{ product.price|format_currency('EUR') }}</h5>
 				</div>
 				<div class="flex justify-between py-3 px-4">
-					<div {{ vue_component('AddProductToCart', {productId: product.id}) }}></div>
+					<div {{ vue_component('AddProductToCart', {productTitle: product.title}) }}></div>
 				</div>
 			</div>
 		{% endfor %}
