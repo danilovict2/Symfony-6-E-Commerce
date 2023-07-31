@@ -25,12 +25,6 @@ class Customer
     #[ORM\Column(length: 45, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $createdBy = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $updatedBy = null;
-
     #[ORM\OneToOne(mappedBy: 'Customer', cascade: ['persist', 'remove'])]
     private ?CustomerAdress $adress = null;
 
@@ -83,30 +77,6 @@ class Customer
     public function setStatus(?string $status): static
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getCreatedBy(): ?User
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?User $createdBy): static
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getUpdatedBy(): ?User
-    {
-        return $this->updatedBy;
-    }
-
-    public function setUpdatedBy(?User $updatedBy): static
-    {
-        $this->updatedBy = $updatedBy;
 
         return $this;
     }

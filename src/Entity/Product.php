@@ -31,12 +31,6 @@ class Product
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $createdBy = null;
-
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $updatedBy = null;
-
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
@@ -92,30 +86,6 @@ class Product
     public function setPrice(string $price): static
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getCreatedBy(): ?User
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(?User $createdBy): static
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getUpdatedBy(): ?User
-    {
-        return $this->updatedBy;
-    }
-
-    public function setUpdatedBy(?User $updatedBy): static
-    {
-        $this->updatedBy = $updatedBy;
 
         return $this;
     }
