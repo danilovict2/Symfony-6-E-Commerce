@@ -16,7 +16,7 @@
                                 </a>
                                 <div class="flex flex-col justify-between flex-1">
                                     <div class="flex justify-between mb-3">
-                                        <h3 v-text="cartItem.title" class="text-3xl"></h3>
+                                        <h3 v-text="cartItem.title" class="text-xl"></h3>
                                         <span class="text-lg font-semibold">
                                             $<span v-text="cartItem.price"></span>
                                         </span>
