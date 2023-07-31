@@ -1,5 +1,13 @@
 <template>
-    <button class="btn-primary" @click="addToCart()" :class="{ 'py-4 text-lg flex justify-center min-w-0 w-full mb-6' : props.isBig }">
+    <div class="flex items-center justify-between mb-5">
+        <label for="quantity" class="block font-bold mr-4">
+            Quantity
+        </label>
+        <input type="number" name="quantity" v-model="quantity" min="1"
+            class="w-32 focus:border-purple-500 focus:outline-none rounded" />
+    </div>
+    <button class="btn-primary" @click="addToCart()"
+        :class="{ 'py-4 text-lg flex justify-center min-w-0 w-full mb-6': props.isBig }">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor"
             stroke-width="2" v-show="props.isBig">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -12,24 +20,27 @@
 <script setup>
 import axios from 'axios';
 import { cart } from '../stores/cart.js';
+import { ref } from 'vue';
 
 let props = defineProps({
-    productTitle: String, 
+    productTitle: String,
     isBig: {
         type: Boolean,
         default: false
     }
 });
 
+let quantity = ref(1);
+
 function addToCart() {
     axios.post('/cart/add/' + props.productTitle, null, {
         params: {
-            quantity: 1
+            quantity: quantity.value
         }
     })
-    .then(response => {
-        cart.itemsCount = response.data.count;
-    })
+        .then(response => {
+            cart.itemsCount = response.data.count;
+        })
 }
 
 </script>
