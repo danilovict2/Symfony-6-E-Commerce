@@ -26,7 +26,7 @@ class CustomerAdress
     private ?string $state = null;
 
     #[ORM\Column(length: 3)]
-    private ?string $countyCode = null;
+    private ?string $countryCode = null;
 
     #[ORM\Column(length: 45)]
     private ?string $zipcode = null;
@@ -88,14 +88,14 @@ class CustomerAdress
         return $this;
     }
 
-    public function getCountyCode(): ?string
+    public function getCountryCode(): ?string
     {
-        return $this->countyCode;
+        return $this->countryCode;
     }
 
-    public function setCountyCode(string $countyCode): static
+    public function setCountryCode(string $countyCode): static
     {
-        $this->countyCode = $countyCode;
+        $this->countryCode = $countyCode;
 
         return $this;
     }
