@@ -25,8 +25,11 @@ class Customer
     #[ORM\Column(length: 45, nullable: true)]
     private ?string $status = null;
 
-    #[ORM\OneToOne(mappedBy: 'Customer', cascade: ['persist', 'remove'])]
-    private ?CustomerAdress $adress = null;
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?CustomerAdress $shippingAdress = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?CustomerAdress $billingAdress = null;
 
     public function getId(): ?int
     {
@@ -94,6 +97,30 @@ class Customer
         }
 
         $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getShippingAdress(): ?CustomerAdress
+    {
+        return $this->shippingAdress;
+    }
+
+    public function setShippingAdress(?CustomerAdress $shippingAdress): static
+    {
+        $this->shippingAdress = $shippingAdress;
+
+        return $this;
+    }
+
+    public function getBillingAdress(): ?CustomerAdress
+    {
+        return $this->billingAdress;
+    }
+
+    public function setBillingAdress(?CustomerAdress $billingAdress): static
+    {
+        $this->billingAdress = $billingAdress;
 
         return $this;
     }
