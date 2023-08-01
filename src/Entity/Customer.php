@@ -84,23 +84,6 @@ class Customer
         return $this;
     }
 
-    public function getAdress(): ?CustomerAdress
-    {
-        return $this->adress;
-    }
-
-    public function setAdress(CustomerAdress $adress): static
-    {
-        // set the owning side of the relation if necessary
-        if ($adress->getCustomer() !== $this) {
-            $adress->setCustomer($this);
-        }
-
-        $this->adress = $adress;
-
-        return $this;
-    }
-
     public function getShippingAdress(): ?CustomerAdress
     {
         return $this->shippingAdress;
