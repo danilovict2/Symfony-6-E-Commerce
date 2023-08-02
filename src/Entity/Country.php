@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\CountryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: CountryRepository::class)]
+#[UniqueEntity('code', message: 'Country with this code already exists')]
 class Country
 {
     #[ORM\Id]
@@ -13,7 +15,7 @@ class Country
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 3)]
+    #[ORM\Column(length: 3, unique: true)]
     private ?string $code = null;
 
     #[ORM\Column(length: 255)]
