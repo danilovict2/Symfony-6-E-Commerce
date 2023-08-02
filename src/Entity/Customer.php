@@ -22,9 +22,6 @@ class Customer
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
 
-    #[ORM\Column(length: 45, nullable: true)]
-    private ?string $status = null;
-
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?CustomerAddress $shippingAddress = null;
 
@@ -68,18 +65,6 @@ class Customer
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?string $status): static
-    {
-        $this->status = $status;
 
         return $this;
     }
