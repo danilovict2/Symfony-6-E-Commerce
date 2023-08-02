@@ -23,10 +23,10 @@ class OrderDetail
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adress1 = null;
+    private ?string $address1 = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adress2 = null;
+    private ?string $address2 = null;
 
     #[ORM\Column(length: 255)]
     private ?string $city = null;
@@ -81,26 +81,26 @@ class OrderDetail
         return $this;
     }
 
-    public function getAdress1(): ?string
+    public function getAddress1(): ?string
     {
-        return $this->adress1;
+        return $this->address1;
     }
 
-    public function setAdress1(string $adress1): static
+    public function setAddress1(string $address1): static
     {
-        $this->adress1 = $adress1;
+        $this->address1 = $address1;
 
         return $this;
     }
 
-    public function getAdress2(): ?string
+    public function getAddress2(): ?string
     {
-        return $this->adress2;
+        return $this->address2;
     }
 
-    public function setAdress2(string $adress2): static
+    public function setAddress2(string $address2): static
     {
-        $this->adress2 = $adress2;
+        $this->address2 = $address2;
 
         return $this;
     }

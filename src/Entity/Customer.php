@@ -26,10 +26,10 @@ class Customer
     private ?string $status = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?CustomerAdress $shippingAdress = null;
+    private ?CustomerAddress $shippingAddress = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?CustomerAdress $billingAdress = null;
+    private ?CustomerAddress $billingAddress = null;
 
     public function getId(): ?int
     {
@@ -84,26 +84,26 @@ class Customer
         return $this;
     }
 
-    public function getShippingAdress(): ?CustomerAdress
+    public function getShippingAddress(): ?CustomerAddress
     {
-        return $this->shippingAdress;
+        return $this->shippingAddress;
     }
 
-    public function setShippingAdress(?CustomerAdress $shippingAdress): static
+    public function setShippingAddress(?CustomerAddress $shippingAddress): static
     {
-        $this->shippingAdress = $shippingAdress;
+        $this->shippingAddress = $shippingAddress;
 
         return $this;
     }
 
-    public function getBillingAdress(): ?CustomerAdress
+    public function getBillingAddress(): ?CustomerAddress
     {
-        return $this->billingAdress;
+        return $this->billingAddress;
     }
 
-    public function setBillingAdress(?CustomerAdress $billingAdress): static
+    public function setBillingAddress(?CustomerAddress $billingAddress): static
     {
-        $this->billingAdress = $billingAdress;
+        $this->billingAddress = $billingAddress;
 
         return $this;
     }
