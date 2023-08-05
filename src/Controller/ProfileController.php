@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Customer;
 use App\Entity\CustomerAddress;
 use App\Form\ChangePasswordFormType;
 use App\Repository\CountryRepository;
