@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Profile
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('errors') %}
+		<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+			<span class="block sm:inline">{{ flash_error }}</span>
+			<span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+				<svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20">
+					<title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+			</span>
+		</div>
+	{% endfor %}
+	<main class="p-5">
+		<div class="container lg:w-2/3 xl:w-2/3 mx-auto">
+			<div class="grid grid-cols-1 sm:grid-cols-5 items-start gap-6">
+				<form method="POST" action="{{ path('profile_update') }}" class="col-span-3 bg-white p-4 rounded-lg shadow">
+					<input
+					type="hidden" name="token" value="{{ csrf_token('update-profile') }}">
+
+					<!-- Profile Details -->
+					<div class="mb-6">
+						<h2 class="text-xl mb-5">Profile Details</h2>
+						<div class="grid grid-cols-2 gap-3 mb-3">
+							<input type="text" name="user[first_name]" value="{{ customer.firstName }}" placeholder="First Name" class="w-full focus:border-purple-600 focus:ring-purple-600 border-gray-300 rounded"/>
+							<input type="text" name="user[last_name]" value="{{ customer.lastName }}" placeholder="Last Name" class="w-full focus:border-purple-600 focus:ring-purple-600 border-gray-300 rounded"/>
+						</div>
+						<div class="mb-4">
+							<input placeholder="Your Phone" type="text" name="user[phone]" value="{{ customer.phone }}" class="border-gray-300 focus:border-purple-500 focus:outline-none focus:ring-purple-500 rounded-md w-full"/>
+						</div>
+					</div>
+					<!--/ Profile Details -->
+
+					<!-- Billing Address -->
+					<div class="mb-6">
+						<div {{ vue_component('AddressForm', {addressName: "Billing", address: billingAddress.toArray(), countries: countries}) }}></div>
+					</div>
+					<!--/ Billing Address -->
+
+					<!-- Shipping Address -->
+					<div class="mb-6">
+						<div {{ vue_component('AddressForm', {addressName: "Shipping", address: shippingAddress.toArray(), countries: countries}) }}></div>
+					</div>
+					<!--/ Shipping Address -->
+
+					<button class="btn-primary bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 w-full">Update</button>
+
+				</form>
+
+				{{ form_start(updatePasswordForm, {attr: {class: 'col-span-2 bg-white p-4 rounded-lg shadow'}}) }}
+				<h2 class="text-xl mb-5">Update Password</h2>
+				<div class="mb-4">
+					{{ form_widget(updatePasswordForm.plainPassword.first, {attr: {placeholder: 'New Password', class: 'border-gray-300 focus:border-purple-500 focus:outline-none focus:ring-purple-500 rounded-md w-full'}}) }}
+				</div>
+				<div class="mb-4">
+					{{ form_widget(updatePasswordForm.plainPassword.second, {attr: {placeholder: 'Repeat new password', class: 'border-gray-300 focus:border-purple-500 focus:outline-none focus:ring-purple-500 rounded-md w-full'}}) }}
+				</div>
+				<div>
+					<button class="btn-primary bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700">Update</button>
+				</div>
+				{{ form_end(updatePasswordForm) }}
+
+			</div>
+		</div>
+	</main>
+{% endblock %}

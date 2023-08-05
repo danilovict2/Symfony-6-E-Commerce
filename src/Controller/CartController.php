@@ -30,7 +30,7 @@ class CartController extends AbstractController
             },
             $cookieCartItems
         );
-        
+
         return $this->render('cart/index.html.twig', [
             'cartItems' => $cartItems
         ]);

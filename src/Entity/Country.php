@@ -24,6 +24,16 @@ class Country
     #[ORM\Column(nullable: true)]
     private array $states = [];
 
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $this->name,
+            'states' => $this->states
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;

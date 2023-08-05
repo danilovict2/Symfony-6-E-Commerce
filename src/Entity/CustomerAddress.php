@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CustomerAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CustomerAddressRepository::class)]
 class CustomerAddress
@@ -14,26 +15,41 @@ class CustomerAddress
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $address1 = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $address2 = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $city = null;
 
     #[ORM\Column(length: 45, nullable: true)]
     private ?string $state = null;
 
-    #[ORM\Column(length: 3)]
-    private ?string $countryCode = null;
-
     #[ORM\Column(length: 45)]
+    #[Assert\NotBlank]
     private ?string $zipcode = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?Country $country = null;
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'address1' => $this->address1,
+            'address2' => $this->address2,
+            'city' => $this->city,
+            'state' => $this->state,
+            'zipcode' => $this->zipcode,
+            'country' => $this->country->toArray()
+        ];
+    }
 
     public function getId(): ?int
     {
@@ -84,18 +100,6 @@ class CustomerAddress
     public function setState(?string $state): static
     {
         $this->state = $state;
-
-        return $this;
-    }
-
-    public function getCountryCode(): ?string
-    {
-        return $this->countryCode;
-    }
-
-    public function setCountryCode(string $countyCode): static
-    {
-        $this->countryCode = $countyCode;
 
         return $this;
     }

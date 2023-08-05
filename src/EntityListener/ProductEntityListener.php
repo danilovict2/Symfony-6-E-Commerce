@@ -24,11 +24,10 @@ class ProductEntityListener
         $product->setDeletedBy($this->security->getUser());
         $this->entityManager->persist($product);
         $this->entityManager->flush();
-        
+
         if ($product->getImage()) {
             unlink('uploads/photos/' . $product->getImage());
         }
-        
     }
 
     public function preUpdate(Product $product, LifecycleEventArgs $event)
@@ -37,5 +36,4 @@ class ProductEntityListener
             unlink('uploads/photos/' . $product->getImage());
         }
     }
-
 }

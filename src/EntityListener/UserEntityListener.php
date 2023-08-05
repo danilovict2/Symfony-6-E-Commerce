@@ -20,14 +20,13 @@ class UserEntityListener
     public function prePersist(User $user, LifecycleEventArgs $args)
     {
         $customer = new Customer();
-        $names = explode(" ",$user->getName());
+        $names = explode(" ", $user->getName());
         $customer->setFirstName($names[0]);
         $customer->setLastName($names[1] ?? '');
-        
+
         $this->entityManager->persist($customer);
         $this->entityManager->flush();
 
         $user->setCustomer($customer);
     }
 }
-
