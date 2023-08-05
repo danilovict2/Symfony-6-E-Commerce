@@ -97,7 +97,9 @@ class ProfileController extends AbstractController
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         } elseif ($form->isSubmitted()) {
-            $this->addFlash('errors', 'There was an error with password change. Please try again later!');
+            foreach ($form->getErrors() as $error) {
+                $this->addFlash('errors', $error->getMessage());
+            }
         }
 
         return $this->redirectToRoute('profile');
