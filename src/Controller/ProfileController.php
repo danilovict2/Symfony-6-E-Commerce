@@ -18,13 +18,14 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_USER')]
+#[Route('/profile')]
 class ProfileController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $entityManager, private ValidatorInterface $validator)
     {
     }
 
-    #[Route('/profile', name: 'profile')]
+    #[Route('', name: 'profile')]
     public function view(CountryRepository $countryRepository): Response
     {
         $user = $this->getUser();
@@ -47,7 +48,7 @@ class ProfileController extends AbstractController
         ]);
     }
 
-    #[Route('/profile/update', name: 'profile_update', methods: ["POST"])]
+    #[Route('/update', name: 'profile_update', methods: ["POST"])]
     public function update(Request $request, CustomerAddressRepository $customerAddressRepository): Response
     {
         if (!$this->isCsrfTokenValid('update-profile', $request->request->get('token'))) {
@@ -91,7 +92,7 @@ class ProfileController extends AbstractController
         }
     }
 
-    #[Route('/profile/update-password', name: 'profile_update_password', methods: ["POST"])]
+    #[Route('/update-password', name: 'profile_update_password', methods: ["POST"])]
     public function updatePassword(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $form = $this->createForm(ChangePasswordFormType::class)->handleRequest($request);
