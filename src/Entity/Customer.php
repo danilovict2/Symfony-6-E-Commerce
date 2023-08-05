@@ -15,15 +15,18 @@ class Customer
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'First name is required!')]
+    #[Assert\Length(max: 255, maxMessage: 'Your first name cannot be longer than {{ limit }} characters')]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Last name is required!')]
+    #[Assert\Length(max: 255, maxMessage: 'Your last name cannot be longer than {{ limit }} characters')]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Phone number is required!')]
+    #[Assert\Length(max: 255, maxMessage: 'Your phone cannot be longer than {{ limit }} characters')]
     private ?string $phone = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]

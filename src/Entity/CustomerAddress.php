@@ -15,27 +15,30 @@ class CustomerAddress
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Address 1 is required!')]
+    #[Assert\Length(max: 255, maxMessage: 'Your first address cannot be longer than {{ limit }} characters')]
     private ?string $address1 = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\Length(max: 255, maxMessage: 'Your second address cannot be longer than {{ limit }} characters')]
     private ?string $address2 = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'City is required!')]
+    #[Assert\Length(max: 255, maxMessage: 'City name cannot be longer than {{ limit }} characters')]
     private ?string $city = null;
 
     #[ORM\Column(length: 45, nullable: true)]
     private ?string $state = null;
 
     #[ORM\Column(length: 45)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Zipcode is required!')]
+    #[Assert\Length(max: 45, maxMessage: 'Your zipcode cannot be longer than {{ limit }} characters')]
     private ?string $zipcode = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'You must select a country!')]
     private ?Country $country = null;
 
     public function toArray()

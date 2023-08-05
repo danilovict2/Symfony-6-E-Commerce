@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_USER')]
@@ -70,7 +71,9 @@ class ProfileController extends AbstractController
             $this->entityManager->persist($customer);
             $this->entityManager->flush();
         } else {
-            $this->addFlash('errors', 'There was an error with data you submited. Please try again!');
+            $this->addErrorsToFlash('Customer', $this->validator->validate($customer));
+            $this->addErrorsToFlash('Billing Address', $this->validator->validate($billingAddress));
+            $this->addErrorsToFlash('Shipping Address', $this->validator->validate($shippingAddress));
         }
 
         return $this->redirectToRoute('profile');
@@ -79,6 +82,13 @@ class ProfileController extends AbstractController
     private function isValidEntity(mixed $entity): bool
     {
         return $this->validator->validate($entity)->count();
+    }
+
+    private function addErrorsToFlash(string $entityName, ConstraintViolationList $errors): void
+    {
+        foreach ($errors as $error) {
+            $this->addFlash('errors', "<b>$entityName</b>" . ': ' . $error->getMessage());
+        }
     }
 
     #[Route('/profile/update-password', name: 'profile_update_password', methods: ["POST"])]
