@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class Cart
@@ -41,5 +43,23 @@ class Cart
     {
         $cookie = new Cookie("cart_items", json_encode($cartItems), (new \DateTime('now'))->modify("+12 day"), "/");
         $response->headers->setCookie($cookie);
+    }
+
+    public static function getFullCartItemsFromCookie(Request $request, ProductRepository $productRepository): array
+    {
+        $cookieCartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
+        return array_map(
+            function ($cookieCartItem) use ($productRepository) {
+                $product = $productRepository->find($cookieCartItem['product_id']);
+                return [
+                    'id' => $product->getId(),
+                    'image' => $product->getImage(),
+                    'title' => $product->getTitle(),
+                    'price' => $product->getPrice(),
+                    'quantity' => $cookieCartItem['quantity'],
+                ];
+            },
+            $cookieCartItems
+        );
     }
 }
