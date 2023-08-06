@@ -21,6 +21,19 @@ class PaymentRepository extends ServiceEntityRepository
         parent::__construct($registry, Payment::class);
     }
 
+    public function createPayment(array $data): Payment
+    {
+        $payment = new Payment();
+        $payment->setAmount($data['amount'])
+            ->setStatus($data['status'])
+            ->setType($data['type'])
+            ->setSessionId($data['session_id'])
+        ;
+        
+        $this->save($payment);
+        return $payment;
+    }
+
     public function save(Payment $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

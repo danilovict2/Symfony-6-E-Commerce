@@ -21,6 +21,19 @@ class OrderItemRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderItem::class);
     }
 
+    public function createOrderItem(array $data): OrderItem
+    {
+        $orderItem = new OrderItem();
+        $orderItem->setRelatedOrder($data['order'])
+            ->setProduct($data['product'])
+            ->setQuantity($data['quantity'])
+            ->setUnitPrice($data['unit_price'])
+        ;
+        
+        $this->save($orderItem);
+        return $orderItem;
+    }
+
     public function save(OrderItem $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
