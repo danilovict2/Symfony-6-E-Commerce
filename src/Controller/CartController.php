@@ -16,21 +16,7 @@ class CartController extends AbstractController
     #[Route('', name: 'cart')]
     public function index(Request $request, ProductRepository $productRepository): Response
     {
-        $cookieCartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
-        $cartItems = array_map(
-            function ($cookieCartItem) use ($productRepository) {
-                $product = $productRepository->find($cookieCartItem['product_id']);
-                return [
-                    'id' => $product->getId(),
-                    'image' => $product->getImage(),
-                    'title' => $product->getTitle(),
-                    'price' => $product->getPrice(),
-                    'quantity' => $cookieCartItem['quantity'],
-                ];
-            },
-            $cookieCartItems
-        );
-
+        $cartItems = Cart::getFullCartItemsFromCookie($request, $productRepository);
         return $this->render('cart/index.html.twig', [
             'cartItems' => $cartItems
         ]);
@@ -85,7 +71,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/items/count', name: 'cart_items_count', methods: ['POST'])]
-    public function itemCount(Request $request)
+    public function itemCount(Request $request): JsonResponse
     {
         $cartItems = json_decode($request->cookies->get('cart_items'), true) ?? [];
         return $this->json([

@@ -27,6 +27,9 @@ class Payment
     #[ORM\Column(length: 45)]
     private ?string $type = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sessionId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +79,18 @@ class Payment
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSessionId(): ?string
+    {
+        return $this->sessionId;
+    }
+
+    public function setSessionId(?string $sessionId): static
+    {
+        $this->sessionId = $sessionId;
 
         return $this;
     }

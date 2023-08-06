@@ -25,11 +25,11 @@
                                         <div class="flex items-center">
                                             Qty:
                                             <input type="number" min="1" v-model="cartItem.quantity"
-                                                class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" 
-                                                @change="changeQuantity(cartItem)"    
-                                            />
+                                                class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16"
+                                                @change="changeQuantity(cartItem)" />
                                         </div>
-                                        <RemoveProductFromCart :product-title="cartItem.title" @removed="removeProduct(cartItem.id)"/>
+                                        <RemoveProductFromCart :product-title="cartItem.title"
+                                            @removed="removeProduct(cartItem.id)" />
                                     </div>
                                 </div>
                             </div>
@@ -48,9 +48,11 @@
                             Shipping and taxes calculated at checkout.
                         </p>
 
-                        <button class="btn-primary w-full py-3 text-lg">
-                            Proceed to Checkout
-                        </button>
+                        <form action="/checkout" method="POST">
+                            <button class="btn-primary w-full py-3 text-lg">
+                                Proceed to Checkout
+                            </button>
+                        </form>
                     </div>
                 </div>
                 <!--/ Product Items -->
@@ -90,8 +92,8 @@ function changeQuantity(product) {
             quantity: parseInt(product.quantity)
         }
     })
-    .then(response => {
-        cart.itemsCount = response.data.count;
-    })
+        .then(response => {
+            cart.itemsCount = response.data.count;
+        })
 }
 </script>

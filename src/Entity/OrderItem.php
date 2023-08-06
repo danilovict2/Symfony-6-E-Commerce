@@ -18,7 +18,7 @@ class OrderItem
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $relatedOrder = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
