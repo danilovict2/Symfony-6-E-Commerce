@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App;
 
@@ -33,6 +33,7 @@ class Stripe
     private function getLineItems(array $items): array
     {
         $lineItems = [];
+        $items = $this->adaptItems($items);
         foreach ($items as $item) {
             $lineItems[] = [
                 'price_data' => [
@@ -47,6 +48,20 @@ class Stripe
         }
 
         return $lineItems;
+    }
+
+    private function adaptItems(array $items): array
+    {
+        $newItems = [];
+        foreach ($items as $item) {
+            $newItems[] = [
+                'title' => $item->getProduct()->getTitle() ?? $item['title'],
+                'price' => $item->getUnitPrice() ?? $item['price'],
+                'quantity' => $item->getQuantity() ?? $item['quantity']
+            ];
+        }
+        
+        return $newItems;
     }
 
     public function createCheckoutCustomerFromCustomerEntity(Customer $customer): StripeCustomer
@@ -70,10 +85,9 @@ class Stripe
     {
         $lineItems = $this->getLineItems($items);
         return array_reduce(
-            $lineItems, 
-            fn($carry, $item) => $carry + $item['quantity'] * $item['price_data']['unit_amount'], 
+            $lineItems,
+            fn($carry, $item) => $carry + $item['quantity'] * $item['price_data']['unit_amount'],
             0
         );
     }
-
 }

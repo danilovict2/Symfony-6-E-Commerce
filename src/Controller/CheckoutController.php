@@ -10,6 +10,7 @@ use App\Repository\OrderRepository;
 use App\Repository\PaymentRepository;
 use App\Stripe;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Checkout\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +33,7 @@ class CheckoutController extends AbstractController
     {
         $cartItems = Cart::getFullCartItemsFromCookie($request, $this->entityManager->getRepository(Product::class));
         $totalPrice = $this->stripe->getTotal($cartItems);
-        $customer = $this->getUser()->getCustomer();
-        $successUrl = $request->getSchemeAndHttpHost() . $this->generateUrl('checkout_success');
-        $cancelUrl = $request->getSchemeAndHttpHost() . $this->generateUrl('checkout_failure', ['message' => 'Stripe error, transaction failed!']);
-        $checkout_session = $this->stripe->createSession($customer, $cartItems, $successUrl, $cancelUrl);
+        $checkout_session = $this->createCheckoutSession($request, $cartItems);
 
         $payment = $paymentRepository->createPayment([
             'amount' => $totalPrice,
@@ -53,6 +51,14 @@ class CheckoutController extends AbstractController
         $response = new RedirectResponse($checkout_session->url);
         $response->headers->clearCookie('cart_items');
         return $response;
+    }
+
+    private function createCheckoutSession(Request $request, array $items): Session
+    {
+        $customer = $this->getUser()->getCustomer();
+        $successUrl = $request->getSchemeAndHttpHost() . $this->generateUrl('checkout_success');
+        $cancelUrl = $request->getSchemeAndHttpHost() . $this->generateUrl('checkout_failure', ['message' => 'Stripe error, transaction failed!']);
+        return $this->stripe->createSession($customer, $items, $successUrl, $cancelUrl);
     }
 
     #[Route('/success', name: 'checkout_success')]
@@ -92,5 +98,21 @@ class CheckoutController extends AbstractController
         return $this->render('checkout/failure.html.twig', [
             'message' => $message
         ]);
+    }
+
+    #[Route('/{id}', name: 'checkout_order', methods: ["POST"])]
+    public function checkoutOrder(Order $order, Request $request): Response
+    {
+        if (!$this->isCsrfTokenValid('checkout-order', $request->request->get('token'))) {
+            return $this->redirectToRoute('checkout_failure', ['message' => 'Invalid CSRF token!']);
+        }
+
+        $checkout_session = $this->createCheckoutSession($request, $order->getOrderItems()->toArray());
+        $payment = $order->getPayment();
+        $payment->setSessionId($checkout_session->id);
+        $this->entityManager->persist($payment);
+        $this->entityManager->flush();
+
+        return $this->redirect($checkout_session->url);
     }
 }
