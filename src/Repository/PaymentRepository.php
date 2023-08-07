@@ -29,7 +29,7 @@ class PaymentRepository extends ServiceEntityRepository
             ->setType($data['type'])
             ->setSessionId($data['session_id'])
         ;
-        
+
         $this->save($payment);
         return $payment;
     }

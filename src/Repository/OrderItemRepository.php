@@ -29,7 +29,7 @@ class OrderItemRepository extends ServiceEntityRepository
             ->setQuantity($data['quantity'])
             ->setUnitPrice($data['unit_price'])
         ;
-        
+
         $this->save($orderItem);
         return $orderItem;
     }
