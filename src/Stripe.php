@@ -7,7 +7,6 @@ use Stripe\Checkout\Session;
 use Stripe\Customer as StripeCustomer;
 use Stripe\StripeClient;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpFoundation\Request;
 
 class Stripe
 {
@@ -67,7 +66,7 @@ class Stripe
         return $this->stripe->customers->retrieve($session->customer);
     }
 
-    public function getTotal(array $items): int
+    public function getTotal(array $items): float
     {
         $lineItems = $this->getLineItems($items);
         return array_reduce(
