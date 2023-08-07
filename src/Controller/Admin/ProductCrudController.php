@@ -3,15 +3,13 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Mime\MimeTypesInterface;
 
 class ProductCrudController extends AbstractCrudController
 {
@@ -36,8 +34,7 @@ class ProductCrudController extends AbstractCrudController
             ->hideOnForm();
         yield TextField::new('title');
         yield TextField::new('description');
-        yield MoneyField::new('price')
-            ->setCurrency('EUR');
+        yield NumberField::new('price');
         yield ImageField::new('image')
             ->setBasePath('uploads/photos')
             ->setUploadDir('public/uploads/photos')
