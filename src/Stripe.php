@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Entity\Customer;
+use App\Entity\OrderItem;
 use Stripe\Checkout\Session;
 use Stripe\Customer as StripeCustomer;
 use Stripe\StripeClient;
@@ -55,9 +56,9 @@ class Stripe
         $newItems = [];
         foreach ($items as $item) {
             $newItems[] = [
-                'title' => $item->getProduct()->getTitle() ?? $item['title'],
-                'price' => $item->getUnitPrice() ?? $item['price'],
-                'quantity' => $item->getQuantity() ?? $item['quantity']
+                'title' => $item instanceof OrderItem ? $item->getProduct()->getTitle() : $item['title'],
+                'price' => $item instanceof OrderItem ? $item->getUnitPrice() : $item['price'],
+                'quantity' => $item instanceof OrderItem ? $item->getQuantity() : $item['quantity']
             ];
         }
         
