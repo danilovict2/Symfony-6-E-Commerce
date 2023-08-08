@@ -51,7 +51,7 @@ class ProfileController extends AbstractController
     public function update(Request $request, CustomerAddressRepository $customerAddressRepository): Response
     {
         if (!$this->isCsrfTokenValid('update-profile', $request->request->get('token'))) {
-            die;
+            return new Response('Invalid CSRF token!');
         }
 
         $customerData = $request->request->all('user');
