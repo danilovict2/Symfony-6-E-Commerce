@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Customer;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
@@ -30,6 +31,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Products', 'fas fa-list', Product::class);
         yield MenuItem::linkToCrud('Orders', 'fas fa-list', Order::class);
-        yield MenuItem::linkToCrud('Users', 'fa-solid fa-users', User::class);
+        yield MenuItem::linkToCrud('Users', 'fa-solid fa-user-group', User::class);
+        yield MenuItem::linkToCrud('Customers', 'fa-solid fa-users', Customer::class);
     }
 }

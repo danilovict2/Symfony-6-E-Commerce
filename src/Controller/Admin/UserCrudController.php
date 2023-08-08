@@ -24,7 +24,8 @@ class UserCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Users')
             ->setSearchFields(['name', 'email'])
             ->setDefaultSort(['id' => 'ASC'])
-            ->setPaginatorPageSize(5);
+            ->setPaginatorPageSize(5)
+        ;
     }
 
     

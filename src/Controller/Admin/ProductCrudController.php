@@ -25,7 +25,8 @@ class ProductCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Products')
             ->setSearchFields(['title', 'slug', 'description', 'price'])
             ->setDefaultSort(['id' => 'ASC'])
-            ->setPaginatorPageSize(5);
+            ->setPaginatorPageSize(5)
+        ;
     }
 
     public function configureFields(string $pageName): iterable
