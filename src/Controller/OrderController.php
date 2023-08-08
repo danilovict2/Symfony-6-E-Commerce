@@ -23,6 +23,12 @@ class OrderController extends AbstractController
     #[Route('/order/{id}', name: 'order_show')]
     public function show(Order $order): Response
     {
-        return $this->render('order/show.html.twig');
+        if ($order->getCreatedBy() !== $this->getUser()) {
+            return new Response("You don't have permission to view this order!", 403);
+        }
+
+        return $this->render('order/show.html.twig',[
+            'order' => $order
+        ]);
     }
 }
