@@ -10,7 +10,6 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsEntityListener(event: Events::preRemove, entity: Product::class)]
-#[AsEntityListener(event: Events::preUpdate, entity: Product::class)]
 class ProductEntityListener
 {
     public function __construct(
@@ -25,13 +24,6 @@ class ProductEntityListener
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
-        if ($product->getImage()) {
-            unlink('uploads/photos/' . $product->getImage());
-        }
-    }
-
-    public function preUpdate(Product $product, LifecycleEventArgs $event)
-    {
         if ($product->getImage()) {
             unlink('uploads/photos/' . $product->getImage());
         }

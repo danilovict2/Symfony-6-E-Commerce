@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Cart;
 use App\Entity\Order;
-use App\Entity\Payment;
 use App\Entity\Product;
 use App\Repository\OrderRepository;
 use App\Repository\PaymentRepository;
@@ -69,27 +68,12 @@ class CheckoutController extends AbstractController
             if (!$session) {
                 throw new \Exception('Invalid Session ID!');
             }
-            $payment = $paymentRepository->findOneBy(['sessionId' => $session->id, 'status' => 'pending']);
-            if (!$payment) {
-                throw new \Exception('Payment does not exist!');
-            }
-            $this->setPaymentAndOrderStatusAsPaid($payment, $payment->getRelatedOrder());
 
             $customer = $this->stripe->retreiveCustomer($session);
             return $this->render('checkout/success.html.twig', compact('customer'));
         } catch (\Exception $e) {
             return $this->redirectToRoute('checkout_failure', ['message' => $e->getMessage()]);
         }
-    }
-
-    private function setPaymentAndOrderStatusAsPaid(Payment $payment, Order $order): void
-    {
-        $payment->setStatus('paid');
-        $order->setStatus('paid');
-
-        $this->entityManager->persist($payment);
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
     }
 
     #[Route('/failure/{message}', name: 'checkout_failure')]

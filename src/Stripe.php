@@ -61,7 +61,7 @@ class Stripe
                 'quantity' => $item instanceof OrderItem ? $item->getQuantity() : $item['quantity']
             ];
         }
-        
+
         return $newItems;
     }
 
