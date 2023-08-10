@@ -50,7 +50,7 @@ class CustomerAddress
             'city' => $this->city,
             'state' => $this->state,
             'zipcode' => $this->zipcode,
-            'country' => $this->country->toArray()
+            'country' => $this->country ? $this->country->toArray() : []
         ];
     }
 
