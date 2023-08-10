@@ -4,19 +4,19 @@
         <div class="flex gap-3">
             <div class="mb-4 flex-1">
                 <input placeholder="Address 1" type="text" :name="props.addressName.toLocaleLowerCase() + '[address1]'"
-                    :value="address.address1"
+                    v-model.lazy="address.address1"
                     class="border-gray-300 focus:border-purple-500 focus:outline-none focus:ring-purple-500 rounded-md w-full" />
             </div>
             <div class="mb-4 flex-1">
                 <input placeholder="Address 2" type="text" :name="props.addressName.toLocaleLowerCase() + '[address2]'"
-                    :value="address.address2"
+                    v-model.lazy="address.address2"
                     class="border-gray-300 focus:border-purple-500 focus:outline-none focus:ring-purple-500 rounded-md w-full" />
             </div>
         </div>
         <div class="flex gap-3">
             <div class="mb-4 flex-1">
                 <input placeholder="City" type="text" :name="props.addressName.toLocaleLowerCase() + '[city]'"
-                    :value="address.city"
+                    v-model.lazy="address.city"
                     class="border-gray-300 focus:border-purple-500 focus:outline-none focus:ring-purple-500 rounded-md w-full" />
             </div>
             <div class="mb-4 flex-1">
@@ -50,7 +50,7 @@
             </div>
             <div class="mb-4 flex-1">
                 <input placeholder="Zipcode" type="text" :name="props.addressName.toLocaleLowerCase() + '[zipcode]'"
-                    :value="address.zipcode"
+                    v-model.lazy="address.zipcode"
                     class="border-gray-300 focus:border-purple-500 focus:outline-none focus:ring-purple-500 rounded-md w-full" />
             </div>
         </div>
