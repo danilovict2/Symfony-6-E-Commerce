@@ -48,9 +48,7 @@ class CheckoutController extends AbstractController
         ], $payment);
         $this->entityManager->flush();
 
-        $response = new RedirectResponse($checkout_session->url);
-        $response->headers->clearCookie('cart_items');
-        return $response;
+        return $this->redirect($checkout_session->url);
     }
 
     private function createCheckoutSession(Request $request, array $items): Session
@@ -72,7 +70,10 @@ class CheckoutController extends AbstractController
 
             $customer = $this->stripe->retreiveCustomer($session);
             $countryRepository->incrementOrderCount($this->getUser()->getCustomer()->getBillingAddress()->getCountry());
-            return $this->render('checkout/success.html.twig', compact('customer'));
+
+            $response = $this->render('checkout/success.html.twig', compact('customer'));
+            $response->headers->clearCookie('cart_items');
+            return $response;
         } catch (\Exception $e) {
             return $this->redirectToRoute('checkout_failure', ['message' => $e->getMessage()]);
         }
