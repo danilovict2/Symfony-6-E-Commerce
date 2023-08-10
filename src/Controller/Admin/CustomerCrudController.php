@@ -43,6 +43,8 @@ class CustomerCrudController extends AbstractCrudController
         yield TextField::new('firstName');
         yield TextField::new('lastName');
         yield TelephoneField::new('phone');
+        yield TextField::new('billingAddress');
+        yield TextField::new('shippingAddress');
     }
     
 }

@@ -54,6 +54,11 @@ class CustomerAddress
         ];
     }
 
+    public function __toString(): string
+    {
+        return $this->address1 . ", " . $this->city . " " . $this->zipcode . ", " . $this->country->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

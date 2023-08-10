@@ -69,11 +69,11 @@ class DashboardController extends AbstractDashboardController
         return $chart;
     }
 
-    public function configureAssets(): Assets
+    /*public function configureAssets(): Assets
     {
         return parent::configureAssets()
             ->addWebpackEncoreEntry('app');
-    }
+    }*/
 
     public function configureDashboard(): Dashboard
     {
