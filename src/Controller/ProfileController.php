@@ -81,7 +81,7 @@ class ProfileController extends AbstractController
 
     private function isValidEntity(mixed $entity): bool
     {
-        return $this->validator->validate($entity)->count();
+        return !$this->validator->validate($entity)->count();
     }
 
     private function addErrorsToFlash(string $entityName, ConstraintViolationList $errors): void
