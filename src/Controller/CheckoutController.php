@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Cart;
 use App\Entity\Order;
 use App\Entity\Product;
+use App\Repository\CountryRepository;
 use App\Repository\OrderRepository;
 use App\Repository\PaymentRepository;
 use App\Stripe;
@@ -61,7 +62,7 @@ class CheckoutController extends AbstractController
     }
 
     #[Route('/success', name: 'checkout_success')]
-    public function success(Request $request, PaymentRepository $paymentRepository): Response
+    public function success(Request $request, PaymentRepository $paymentRepository, CountryRepository $countryRepository): Response
     {
         try {
             $session = $this->stripe->retreiveSession($request->query->getString('session_id'));
@@ -70,6 +71,7 @@ class CheckoutController extends AbstractController
             }
 
             $customer = $this->stripe->retreiveCustomer($session);
+            $countryRepository->incrementOrderCount($this->getUser()->getCustomer()->getBillingAddress()->getCountry());
             return $this->render('checkout/success.html.twig', compact('customer'));
         } catch (\Exception $e) {
             return $this->redirectToRoute('checkout_failure', ['message' => $e->getMessage()]);

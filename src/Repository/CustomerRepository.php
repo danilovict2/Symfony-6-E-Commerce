@@ -21,6 +21,11 @@ class CustomerRepository extends ServiceEntityRepository
         parent::__construct($registry, Customer::class);
     }
 
+    public function getRecentCustomers(): array
+    {
+        return $this->findBy([], limit: 5);
+    }
+
     public function save(Customer $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

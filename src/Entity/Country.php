@@ -24,6 +24,9 @@ class Country
     #[ORM\Column(nullable: true)]
     private array $states = [];
 
+    #[ORM\Column(nullable: true)]
+    private ?int $orderCount = null;
+
     public function toArray()
     {
         return [
@@ -71,6 +74,18 @@ class Country
     public function setStates(?array $states): static
     {
         $this->states = $states;
+
+        return $this;
+    }
+
+    public function getOrderCount(): ?int
+    {
+        return $this->orderCount;
+    }
+
+    public function setOrderCount(?int $orderCount): static
+    {
+        $this->orderCount = $orderCount;
 
         return $this;
     }

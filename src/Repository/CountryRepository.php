@@ -21,6 +21,12 @@ class CountryRepository extends ServiceEntityRepository
         parent::__construct($registry, Country::class);
     }
 
+    public function incrementOrderCount(Country $country): void
+    {
+        $country->setOrderCount($country->getOrderCount() + 1);
+        $this->save($country, true);
+    }
+
     public function save(Country $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

@@ -55,6 +55,11 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    public function getRecentOrders(): array
+    {
+        return $this->findBy([], limit: 10);
+    }
+
     public function save(Order $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

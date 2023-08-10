@@ -1465,10 +1465,6 @@ select {
   transition-duration: 150ms;
 }
 
-body {
-  background-color: #e5e7eb;
-}
-
 .wysiwyg-content h3, 
 .wysiwyg-content h4 {
   font-weight: 600;

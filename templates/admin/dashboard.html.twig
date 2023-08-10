@@ -1,10 +1,73 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title %}Dashboard{% endblock %}
-{% block page_actions %}
-    
+{% block content_title %}Dashboard
 {% endblock %}
+{% block page_actions %}{% endblock %}
 
 {% block main %}
-    
+	<div
+		class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+		<!--    Active Customers-->
+		<div class="animate-fade-in-down bg-slate-800 py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
+			<label class="text-lg font-semibold block mb-2">Active Customers</label>
+			<span class="text-3xl font-semibold">{{ customerCount }}</span>
+		</div>
+		<!--/    Active Customers-->
+		<!--    Active Products -->
+		<div class="animate-fade-in-down bg-slate-800 py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center" style="animation-delay: 0.1s">
+			<label class="text-lg font-semibold block mb-2">Active Products</label>
+			<span class="text-3xl font-semibold">{{ productsCount }}</span>
+		</div>
+		<!--/    Active Products -->
+		<!--    Paid Orders -->
+		<div class="animate-fade-in-down bg-slate-800 py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center" style="animation-delay: 0.2s">
+			<label class="text-lg font-semibold block mb-2">Paid Orders</label>
+			<span class="text-3xl font-semibold">{{ paidOrders }}</span>
+		</div>
+		<!--/    Paid Orders -->
+		<!--    Total Income -->
+		<div class="animate-fade-in-down bg-slate-800 py-6 px-5 rounded-lg shadow flex flex-col items-center" style="animation-delay: 0.3s">
+			<label class="text-lg font-semibold block mb-2">Total Income</label>
+			<span class="text-3xl font-semibold">{{ totalIncome|format_currency("EUR") }}</span>
+		</div>
+		<!--/    Total Income -->
+	</div>
+
+	<div class="grid grid-rows-1 md:grid-rows-2 md:grid-flow-col grid-cols-1 md:grid-cols-3 gap-3">
+		<div class="col-span-1 md:col-span-2 row-span-1 md:row-span-2 bg-slate-800 py-6 px-5 rounded-lg shadow">
+			<label class="text-lg font-semibold block mb-2">Latest Orders</label>
+			{% for order in recentOrders %}
+				<div class="py-2 px-3 hover:bg-gray-700">
+					<p>
+						<a href="{{ path('order_show', {id: order.id}) }}">
+							Order # {{ order.id }}
+						</a>
+						created {{ order.createdAt|date('Y-m-d') }}. {{ order.orderItems|length }} item(s)
+					</p>
+					<p class="flex justify-between">
+						<span>
+							{{ order.createdBy.customer.firstName }} {{ order.createdBy.customer.lastName }}
+						</span>
+						<span>
+							{{ order.totalPrice|format_currency('EUR') }}
+						</span>
+					</p>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="bg-slate-800 py-6 px-5 rounded-lg shadow flex flex-col items-center justify-center">
+			<label class="text-lg font-semibold block mb-2">Orders by Country</label>
+			{{ render_chart(chart) }}
+		</div>
+		<div class="bg-slate-800 py-6 px-5 rounded-lg shadow">
+			<label class="text-lg font-semibold block mb-2">Latest Customers</label>
+			{% for customer in recentCustomers %}
+				<div>
+					<h3 class="text-lg">
+						<i class="fa-solid fa-user"></i> {{ customer.firstName }} {{ customer.lastName }}
+					</h3>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}
