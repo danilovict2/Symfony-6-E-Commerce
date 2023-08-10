@@ -25,7 +25,7 @@ class ProfileController extends AbstractController
     }
 
     #[Route('', name: 'profile')]
-    public function view(CountryRepository $countryRepository): Response
+    public function show(CountryRepository $countryRepository): Response
     {
         $user = $this->getUser();
         $customer = $user->getCustomer();
