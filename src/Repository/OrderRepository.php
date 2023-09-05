@@ -19,6 +19,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class OrderRepository extends ServiceEntityRepository
 {
+    private const RECENT_ORDER_LIMIT = 10;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Order::class);
@@ -57,7 +59,7 @@ class OrderRepository extends ServiceEntityRepository
 
     public function getRecentOrders(): array
     {
-        return $this->findBy([], limit: 10);
+        return $this->findBy([], ['createdAt' => 'DESC'], self::RECENT_ORDER_LIMIT);
     }
 
     public function save(Order $entity, bool $flush = false): void
